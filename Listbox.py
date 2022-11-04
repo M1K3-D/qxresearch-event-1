@@ -1,4 +1,6 @@
 import os
+import unicodedata
+import unidecode
 import tkinter as tk
 from tkinter.filedialog import askdirectory
 #from tkinter.messagebox import showinfo
@@ -14,7 +16,10 @@ def ask_question():
     lb.delete(0,tk.END)
     rep_source = tk.filedialog.askdirectory(parent=win, initialdir=homedrive, title="Selectionnez le dossier SOURCE")
     for file in os.listdir(rep_source):
-        lb.insert(0, file)
+        print (file)
+        file = unidecode.unidecode(file)
+        print(file)
+#        lb.insert(0,"  " + file)
 #        print (file)
 
 bt1 = tk.Button(win, text="Open a File", command=ask_question)
