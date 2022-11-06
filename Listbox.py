@@ -15,6 +15,7 @@ home_folder = os.path.expanduser('~')
 homedrive = home_folder
 rep_source = home_folder
 selection=""
+r_record = []
 
 # Selection fichier
 def openfile(evt): 
@@ -40,6 +41,7 @@ def ask_question(rep_source):
     
 def read_files(rep_source):
 #    global rep_source
+    r_record.clear()
     cpt_lu = 0
     cpt_tr = 0
 
@@ -56,9 +58,18 @@ def read_files(rep_source):
             v_type = 'F'
         if os.path.isdir(oldFile) is True :
             v_type = 'D'
-        lb.insert(0, "  " + file + v_type)
+        if os.path.isfile(newFile) is True : 
+            v_exist = 'Y'
+        if os.path.isdir(newFile) is True :
+            v_exist = 'Y'    
+        r_record.append([file,fileDec,oldFile,newFile,v_type,v_exist])
+        
+    for [file,fileDec,oldFile,newFile,v_type,v_exist] in r_record :  
+        # print(file, oldFile)    
+        lb.insert(0, "  " + file + "  "+"\t" + v_type+"\t" + v_exist)
         if file != fileDec:
-            lb.insert(1, "  "+"\t" + fileDec + v_type)
+            lb.insert(1, "  "+"\t" + fileDec + "  "+"\t" + v_type+"\t" + v_exist)  
+        
     win.update()
     Lsize = lb.size()
     if Lsize != 0:
@@ -79,23 +90,25 @@ def rename_files(rep_source):
 #    global rep_source
     cpt_lu = 0
     cpt_tr = 0    
-    for file in os.listdir(rep_source):
-        fileDec = unidecode.unidecode(file)
+
+    for [file,fileDec,oldFile,newFile,v_type,v_exist] in r_record :  
+        # print(file, oldFile)    
         cpt_lu = cpt_lu+1
-        if file != fileDec:
+        if newFile != oldFile:
             pass
-            filePath = Path(rep_source)
-            newFile = filePath / fileDec
-            oldFile = filePath / file
-            try:
-                cpt_tr = cpt_tr+1
-                os.rename(oldFile, newFile)  
-            except Exception as e:
-                print(str(e))
-                tk.messagebox.showinfo('Return', str(e), parent=win)
-#                   break
-        v_cpt.set(str(cpt_lu)+"/"+str(cpt_tr))
-#        la1.config(text=str(cpt_lu)+"/"+str(cpt_tr))
+            # filePath = Path(rep_source)
+            # newFile = filePath / fileDec
+            # oldFile = filePath / file
+            if not ( v_type == "D" and v_exist == "Y" ) :
+                try:
+                    os.rename(oldFile, newFile)  
+                    cpt_tr = cpt_tr+1
+                except Exception as e:
+                    print(str(e))
+                    tk.messagebox.showinfo('Return', str(e), parent=win)
+
+    v_cpt.set(str(cpt_lu)+"/"+str(cpt_tr))
+#   la1.config(text=str(cpt_lu)+"/"+str(cpt_tr))
 
 v_cpt = tk.StringVar(win, value=str(cpt_lu)+"/"+str(cpt_tr))
 v_sel = tk.StringVar(win, value=selection)
