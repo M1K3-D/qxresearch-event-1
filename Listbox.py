@@ -4,10 +4,6 @@ import tkinter as tk
 from tkinter.filedialog import askdirectory
 from pathlib import Path
 from functools import partial
-#global Lsize
-#global rep_source
-#global cpt_lu
-#global cpt_tr
 
 win = tk.Tk()
 win.title("Suppression caracteres accentues".upper())
@@ -15,8 +11,9 @@ win.geometry("800x800")
 Lsize = 0
 cpt_lu = 0
 cpt_tr = 0
-homedrive = os.environ['HOME']
-rep_source = os.environ['HOME']
+home_folder = os.path.expanduser('~')
+homedrive = home_folder
+rep_source = home_folder
 selection=""
 
 # Selection fichier
