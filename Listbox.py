@@ -10,16 +10,18 @@ from functools import partial
 #global cpt_tr
 
 win = tk.Tk()
-win.title("Suppression caracteres accentues")
+win.title("Suppression caracteres accentues".upper())
 win.geometry("800x800")
 Lsize = 0
 cpt_lu = 0
 cpt_tr = 0
 homedrive = os.environ['PWD']
 rep_source = os.environ['PWD']
+selection=""
 
+# Selection fichier
 def openfile(evt): 
-    pass
+#    pass
     w = evt.widget
     index = int(w.curselection()[0])
     value = w.get(index)
@@ -35,10 +37,10 @@ def ask_question(rep_source):
     parent=win, initialdir=homedrive, title="Selectionnez le dossier SOURCE")
     try:
         os.listdir(rep_source)
-        read_files(rep_source)
     except Exception as e:
         tk.messagebox.showinfo('Return', 'Traitement annulé', parent=win)
-
+    read_files(rep_source)
+    
 def read_files(rep_source):
 #    global rep_source
     cpt_lu = 0
@@ -48,7 +50,7 @@ def read_files(rep_source):
         fileDec = unidecode.unidecode(file)
         cpt_lu = cpt_lu+1
         v_cpt.set(str(cpt_lu)+"/"+str(cpt_tr))
-        la1.config(text=str(cpt_lu)+"/"+str(cpt_tr))
+#        la1.config(text=str(cpt_lu)+"/"+str(cpt_tr))
         lb.insert(0, "  " + file)
         if file != fileDec:
             lb.insert(1, "  "+"\t" + fileDec)
@@ -88,8 +90,8 @@ def rename_files(rep_source):
                 tk.messagebox.showinfo('Return', str(e), parent=win)
                 break
         v_cpt.set(str(cpt_lu)+"/"+str(cpt_tr))
-        la1.config(text=str(cpt_lu)+"/"+str(cpt_tr))
-selection=""
+#        la1.config(text=str(cpt_lu)+"/"+str(cpt_tr))
+
 v_cpt = tk.StringVar(win, value=str(cpt_lu)+"/"+str(cpt_tr))
 v_sel = tk.StringVar(win, value=selection)
 action_with_arg = partial(ask_question, rep_source)
@@ -98,10 +100,13 @@ bt1.pack()
 lb = tk.Listbox(win)
 lb.pack(expand=tk.YES, fill=tk.BOTH)
 lb.bind("<<ListboxSelect>>",openfile)
-la1 = tk.Label(win,text=str(cpt_lu)+"/"+str(cpt_tr))
-la1.pack()
+# Utilisation de variable
+#la1 = tk.Label(win,text=str(cpt_lu)+"/"+str(cpt_tr))
+#la1.pack()
+# Utilisation de tk.StringVar
 la2 = tk.Label(win, textvariable=v_cpt)
 la2.pack()
+# Affichage de selection
 la3 = tk.Label(win, textvariable=v_sel)
 la3.pack()
 
