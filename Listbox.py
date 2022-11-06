@@ -48,9 +48,17 @@ def read_files(rep_source):
         cpt_lu = cpt_lu+1
         v_cpt.set(str(cpt_lu)+"/"+str(cpt_tr))
 #        la1.config(text=str(cpt_lu)+"/"+str(cpt_tr))
-        lb.insert(0, "  " + file)
+
+        filePath = Path(rep_source)
+        newFile = filePath / fileDec
+        oldFile = filePath / file
+        if os.path.isfile(oldFile) is True : 
+            v_type = 'F'
+        if os.path.isdir(oldFile) is True :
+            v_type = 'D'
+        lb.insert(0, "  " + file + v_type)
         if file != fileDec:
-            lb.insert(1, "  "+"\t" + fileDec)
+            lb.insert(1, "  "+"\t" + fileDec + v_type)
     win.update()
     Lsize = lb.size()
     if Lsize != 0:
@@ -79,13 +87,13 @@ def rename_files(rep_source):
             filePath = Path(rep_source)
             newFile = filePath / fileDec
             oldFile = filePath / file
-            cpt_tr = cpt_tr+1
             try:
-                    os.rename(oldFile, newFile)
+                cpt_tr = cpt_tr+1
+                os.rename(oldFile, newFile)  
             except Exception as e:
                 print(str(e))
                 tk.messagebox.showinfo('Return', str(e), parent=win)
-                break
+#                   break
         v_cpt.set(str(cpt_lu)+"/"+str(cpt_tr))
 #        la1.config(text=str(cpt_lu)+"/"+str(cpt_tr))
 
