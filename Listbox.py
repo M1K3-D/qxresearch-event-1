@@ -15,8 +15,8 @@ win.geometry("800x800")
 Lsize = 0
 cpt_lu = 0
 cpt_tr = 0
-homedrive = os.environ['PWD']
-rep_source = os.environ['PWD']
+homedrive = os.environ['HOME']
+rep_source = os.environ['HOME']
 selection=""
 
 # Selection fichier
